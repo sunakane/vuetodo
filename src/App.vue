@@ -1,13 +1,18 @@
 <template>
   <div id="app">
     <h1>TodoApp</h1>
-    <ul style="list-style: none;">
+    <ul style="list-style: none">
       <li v-for="todo in $store.state.todos" :key="todo.id">
-        <input :id="todo.id" type="checkbox" v-model="todo.completed" @change="toggleComplete(todo.id)">
+        <input
+          :id="todo.id"
+          type="checkbox"
+          v-model="todo.completed"
+          @change="toggleComplete(todo.id)"
+        />
         <span v-bind:class="{ done: todo.completed }">
           <label :for="todo.id">
-          {{ todo.id }}
-          {{ todo.title }}
+            {{ todo.id }}
+            {{ todo.title }}
           </label>
         </span>
         <span v-show="!todo.completed">
@@ -18,35 +23,35 @@
     </ul>
 
     <form v-if="editing !== null" @submit="editTodo">
-      <input name="title" v-model="title" placeholder="New Todo"/>
+      <input name="title" v-model="title" placeholder="New Todo" />
       <button type="submit">{{ editing }}を編集</button>
     </form>
     <form v-else @submit="addTodo">
-      <input name="title" v-model="title"/>
+      <input name="title" v-model="title" />
       <button type="submit">追加</button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Todo} from "@/types";
+import Vue from "vue";
+import { Todo } from "@/types";
 
 export default Vue.extend({
-  name: 'App',
+  name: "App",
   created() {
     this.$store.dispatch("initialize");
   },
   methods: {
     deleteTodo(id: number) {
-      if (confirm('本当に削除してよろしいですか？')) {
+      if (confirm("本当に削除してよろしいですか？")) {
         console.log(id);
-        this.$store.dispatch('deleteTodo', {id: id});
+        this.$store.dispatch("deleteTodo", { id: id });
       }
     },
     addTodo(event: Event) {
       event.preventDefault();
-      this.$store.dispatch('addTodo', {title: this.title})
+      this.$store.dispatch("addTodo", { title: this.title });
       this.title = "";
     },
     selectToEdit(id: number) {
@@ -55,21 +60,20 @@ export default Vue.extend({
     },
     editTodo(event: Event) {
       event.preventDefault();
-      this.$store.dispatch('editTodo', {id: this.editing, title: this.title});
+      this.$store.dispatch("editTodo", { id: this.editing, title: this.title });
       this.editing = null;
       this.title = "";
     },
     toggleComplete(id: number) {
-      console.log(this.$store.state.todos.find((todo: Todo) => todo.id === id))
-      this.$store.dispatch('toggleComplete', {id: id});
-    }
+      this.$store.dispatch("toggleComplete", { id: id });
+    },
   },
   data() {
     return {
       title: "",
-      editing: null as null | number
-    }
-  }
+      editing: null as null | number,
+    };
+  },
 });
 </script>
 
