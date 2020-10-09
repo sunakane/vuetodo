@@ -18,7 +18,6 @@ export default new Vuex.Store({
   mutations: {
     initialize(state, payload) {
       state.todos = [];
-      console.log(payload);
       payload.map((data: { id: number; title: string; completed: boolean }) =>
         state.todos.push({
           id: data.id,
@@ -51,18 +50,14 @@ export default new Vuex.Store({
       context.commit("initialize", result.data);
     },
     async deleteTodo(context, payload) {
-      await axios
-        .delete(
-          "https://todoapp-laravel-sakin.herokuapp.com/api/todos/delete",
-          {
-            params: {
-              id: payload.id,
-            },
-          }
-        )
-        .then((res) => {
-          console.log(res);
-        });
+      await axios.delete(
+        "https://todoapp-laravel-sakin.herokuapp.com/api/todos/delete",
+        {
+          params: {
+            id: payload.id,
+          },
+        }
+      );
       context.commit("deleteTodo", payload);
     },
     async addTodo(context, payload) {

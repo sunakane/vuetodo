@@ -45,7 +45,6 @@ export default Vue.extend({
   methods: {
     deleteTodo(id: number) {
       if (confirm("本当に削除してよろしいですか？")) {
-        console.log(id);
         this.$store.dispatch("deleteTodo", { id: id });
       }
     },
